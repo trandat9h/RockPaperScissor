@@ -2,13 +2,13 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 const styles = StyleSheet.create({
   container: {
-    width: 130,
+    width: 160,
     height: 80,
-    backgroundColor: "red",
+    backgroundColor: "aqua",
     margin: 10,
     alignItems:"center",
     justifyContent:"center",
-    borderRadius: 10,
+    borderRadius: 40,
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import BattleArea from "./BattleArea";
 
 const styles = StyleSheet.create({
@@ -7,15 +7,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   gameLogo: {
-    textAlign: "center",
-    fontSize: 30,
+    height: 140,
+    width: 400,
   },
 });
 class Game extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.gameLogo}> Rock-Paper-Scissor</Text>
+        <Image resizeMode='contain' style={styles.gameLogo}  source={require('../assets/logo2.png')} />
         <BattleArea />
       </View>
     );

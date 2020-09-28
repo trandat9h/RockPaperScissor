@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import Choice from "./Choice";
 
@@ -41,10 +41,16 @@ const styles = StyleSheet.create({
 });
 
 const options = [
-  { label: "rock", url: "../assets/ClipartKey_900256.png" },
-  { label: "paper", url: "../assets/ClipartKey_1094264.png" },
-  { label: "scissor", url: "../assets/ClipartKey_1094404.png" },
+  { label: "rock", url: require("../assets/ClipartKey_900256.png") },
+  { label: "paper", url: require("../assets/ClipartKey_1094264.png") },
+  { label: "scissor", url: require("../assets/ClipartKey_1094404.png") },
 ];
+
+const versus = [
+  { label: "victory", url: require("../assets/chess.png") },
+  { label: "defeated", url: require("../assets/lose.png") },
+  { label: "tie", url: require("../assets/blades.png") },
+]
 
 const comparison = {
   paper: {
@@ -60,13 +66,13 @@ const comparison = {
   scissor: {
     paper: "victory",
     rock: "defeated",
-    scissor:"tie",
-  }
-}
+    scissor: "tie",
+  },
+};
+
 class BattleArea extends Component {
   state = {
     playerChoice: { label: "rock", index: 0 },
-    computerChoice: { label: "rock", index: 0 },
   };
   onPressHandler = (input, index) => {
     this.setState({ playerChoice: { label: input, index: index } });
@@ -74,100 +80,41 @@ class BattleArea extends Component {
 
   render() {
     const playerChoice = this.state.playerChoice.label;
-    let computerChoiceImage;
     const computerChoice = options[Math.floor(Math.random() * 3)].label;
     const Result = comparison[`${playerChoice}`][`${computerChoice}`];
-    console.log(Result);
-    let resultImage = (
+    const resultURI = versus.find(
+      (option) => option.label === Result
+    ).url;
+    const resultImage = (
       <Image
         resizeMode="contain"
         style={styles.versus}
-        source={require("../assets/vs.png")}
+        source={resultURI}
       />
     );
-
-    if (Result === "victory")
-      resultImage = (
-        <Image
-          resizeMode="contain"
-          style={styles.versus}
-          source={require("../assets/chess.png")}
-        />
-      );
-    else if (Result === "defeated")
-      resultImage = (
-        <Image
-          resizeMode="contain"
-          style={styles.versus}
-          source={require("../assets/lose.png")}
-        />
-      );
-    else
-      resultImage = (
-        <Image
-          resizeMode="contain"
-          style={styles.versus}
-          source={require("../assets/blades.png")}
-        />
-      );
-    if (computerChoice === "rock")
-      computerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_900256.png")}
-          resizeMode="contain"
-        />
-      );
-    if (computerChoice === "paper")
-      computerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_1094264.png")}
-          resizeMode="contain"
-        />
-      );
-    if (computerChoice=== "scissor")
-      computerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_1094404.png")}
-          resizeMode="contain"
-        />
-      );
-    const playerChoiceURI = require("../assets/ClipartKey_900256.png");
-    const playerChoiceImage = (
+    // get computer choice's Image
+    const computerChoiceURI = options.find(
+      (option) => option.label === computerChoice
+    ).url;
+    const computerChoiceImage = (
       <Image
         style={styles.choiceImage}
-        source = {playerChoiceURI}
+        source={computerChoiceURI}
         resizeMode="contain"
       />
     );
-    /*
-    if (this.state.playerChoice.label === "rock")
-      playerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_900256.png")}
-          resizeMode="contain"
-        />
-      );
-    if (this.state.playerChoice.label === "paper")
-      playerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_1094264.png")}
-          resizeMode="contain"
-        />
-      );
-    if (this.state.playerChoice.label === "scissor")
-      playerChoiceImage = (
-        <Image
-          style={styles.choiceImage}
-          source={require("../assets/ClipartKey_1094404.png")}
-          resizeMode="contain"
-        />
-      );
-       */
+    // get player choice's Image
+    const playerChoiceURI = options.find(
+      (option) => option.label === playerChoice
+    ).url;
+    const playerChoiceImage = (
+      <Image
+        style={styles.choiceImage}
+        source={playerChoiceURI}
+        resizeMode="contain"
+      />
+    );
+
     return (
       <View style={styles.container}>
         <View style={styles.information}>

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from "react"; 
 import { StyleSheet, Text, View, Image } from "react-native";
 import Choice from "./Choice";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center',
+    alignItems: "center",
   },
   choice: {
     flex: 1,
@@ -17,8 +17,6 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowRadius: 5,
     borderWidth: 2,
-
-
   },
   section: {
     flex: 1,
@@ -41,15 +39,34 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+const options = [
+  { label: "rock", url: "../assets/ClipartKey_900256.png" },
+  { label: "paper", url: "../assets/ClipartKey_1094264.png" },
+  { label: "scissor", url: "../assets/ClipartKey_1094404.png" },
+];
+
+const comparison = {
+  paper: {
+    rock: "victory",
+    scissor: "defeated",
+    paper: "tie",
+  },
+  rock: {
+    paper: "defeated",
+    scissor: "victory",
+    rock: "tie",
+  },
+  scissor: {
+    paper: "victory",
+    rock: "defeated",
+    scissor:"tie",
+  }
+}
 class BattleArea extends Component {
   state = {
     playerChoice: { label: "rock", index: 0 },
     computerChoice: { label: "rock", index: 0 },
-    options: [
-      { label: "rock", url: "../assets/ClipartKey_900256.png" },
-      { label: "paper", url: "../assets/ClipartKey_1094264.png" },
-      { label: "scissor", url: "../assets/ClipartKey_1094404.png" },
-    ],
   };
   onPressHandler = (input, index) => {
     this.setState({ playerChoice: { label: input, index: index } });
@@ -57,9 +74,10 @@ class BattleArea extends Component {
 
   render() {
     const playerChoice = this.state.playerChoice.label;
-    let playerChoiceImage, computerChoiceImage, Result;
-    const computerChoiceInNumber = Math.floor(Math.random() * 3);
-    const computerChoice = this.state.options[computerChoiceInNumber].label;
+    let computerChoiceImage;
+    const computerChoice = options[Math.floor(Math.random() * 3)].label;
+    const Result = comparison[`${playerChoice}`][`${computerChoice}`];
+    console.log(Result);
     let resultImage = (
       <Image
         resizeMode="contain"
@@ -68,25 +86,7 @@ class BattleArea extends Component {
       />
     );
 
-    if (computerChoice === "rock" && playerChoice === "paper") Result = "win";
-    else if (computerChoice === "rock" && playerChoice === "scissor")
-      Result = "lose";
-    else if (computerChoice === "rock" && playerChoice === "rock")
-      Result = "draw";
-    else if (computerChoice === "paper" && playerChoice === "paper")
-      Result = "draw";
-    else if (computerChoice === "paper" && playerChoice === "rock")
-      Result = "lose";
-    else if (computerChoice === "paper" && playerChoice === "scissor")
-      Result = "win";
-    else if (computerChoice === "scissor" && playerChoice === "paper")
-      Result = "lose";
-    else if (computerChoice === "scissor" && playerChoice === "rock")
-      Result = "win";
-    else if (computerChoice === "scissor" && playerChoice === "scissor")
-      Result = "draw";
-
-    if (Result === "win")
+    if (Result === "victory")
       resultImage = (
         <Image
           resizeMode="contain"
@@ -94,7 +94,7 @@ class BattleArea extends Component {
           source={require("../assets/chess.png")}
         />
       );
-    else if (Result === "lose")
+    else if (Result === "defeated")
       resultImage = (
         <Image
           resizeMode="contain"
@@ -110,7 +110,7 @@ class BattleArea extends Component {
           source={require("../assets/blades.png")}
         />
       );
-    if (computerChoiceInNumber === 0)
+    if (computerChoice === "rock")
       computerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -118,7 +118,7 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
-    if (computerChoiceInNumber === 1)
+    if (computerChoice === "paper")
       computerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -126,7 +126,7 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
-    if (computerChoiceInNumber === 2)
+    if (computerChoice=== "scissor")
       computerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -134,8 +134,16 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
-
-    if (this.state.playerChoice.index === 0)
+    const playerChoiceURI = require("../assets/ClipartKey_900256.png");
+    const playerChoiceImage = (
+      <Image
+        style={styles.choiceImage}
+        source = {playerChoiceURI}
+        resizeMode="contain"
+      />
+    );
+    /*
+    if (this.state.playerChoice.label === "rock")
       playerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -143,7 +151,7 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
-    if (this.state.playerChoice.index === 1)
+    if (this.state.playerChoice.label === "paper")
       playerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -151,7 +159,7 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
-    if (this.state.playerChoice.index === 2)
+    if (this.state.playerChoice.label === "scissor")
       playerChoiceImage = (
         <Image
           style={styles.choiceImage}
@@ -159,6 +167,7 @@ class BattleArea extends Component {
           resizeMode="contain"
         />
       );
+       */
     return (
       <View style={styles.container}>
         <View style={styles.information}>
@@ -174,7 +183,7 @@ class BattleArea extends Component {
         </View>
 
         <View style={styles.choiceContainer}>
-          {this.state.options.map((option, index) => {
+          {options.map((option, index) => {
             return (
               <Choice
                 label={option.label}
